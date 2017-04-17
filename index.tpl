@@ -15,6 +15,7 @@
 </ul>
 <p>This website does not store ANY data. It just tells you what details your browser is leaking which might make a useful fingerprint for anyone interested in tracking you.</p>
 <p>I am developing a WebExtension to prevent this kind of tracking. You can find the repository <a href="https://github.com/Snapper26/shapeshifter">here</a>.</p>
+<p>This website is free software. You can find the source <a href="https://github.com/Snapper26/fingerprint-test">here</a>.</p>
 
 <h1>HTTP Headers</h1>
 

@@ -62,14 +62,20 @@ window.onload = function() {
 
 	// Battery API
 
-	var batteryManager = navigator.getBattery();
+	try {
+		var batteryManager = navigator.getBattery();
 
-	batteryManager.then(function(battery) {
-		document.getElementById("charging").innerHTML = "<b>Charging:</b> " + battery.charging;
-		document.getElementById("charging-time").innerHTML = "<b>Charging Time:</b> " + battery.chargingTime;
-		document.getElementById("discharging-time").innerHTML = "<b>Discharging Time:</b> " + battery.dischargingTime;
-		document.getElementById("level").innerHTML = "<b>Level:</b> " + battery.level;
-	});
+		batteryManager.then(function(battery) {
+			document.getElementById("charging").innerHTML = "<b>Charging:</b> " + battery.charging;
+			document.getElementById("charging-time").innerHTML = "<b>Charging Time:</b> " + battery.chargingTime;
+			document.getElementById("discharging-time").innerHTML = "<b>Discharging Time:</b> " + battery.dischargingTime;
+			document.getElementById("level").innerHTML = "<b>Level:</b> " + battery.level;
+		});
+	}
+	catch (e) {
+		document.getElementById("charging").innerHTML = "<b>Charging:</b> " + e.name;
+		document.getElementById("charging-time").innerHTML = "<b>Charging Time:</b> " + e.message;
+	}
 
 	// Screen API
 
