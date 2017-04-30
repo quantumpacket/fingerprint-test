@@ -105,7 +105,7 @@ window.onload = function() {
 
 	// Canvas API
 
-	var canvas = document.createElement("canvas");
+	var canvas = document.getElementById("fp-canvas");
 
 	var result = [];
 
@@ -157,16 +157,23 @@ window.onload = function() {
 	document.getElementById("canvas-url-fingerprint").innerHTML = "<b>Canvas URL Fingerprint:</b> " + calcMD5(dataURL);
 
 	canvas.toBlob(function(blob) {
-
-		document.getElementById("canvas-blob-data").innerHTML = "<b>Canvas Blob Data:</b> " + blob;
-		document.getElementById("canvas-blob-fingerprint").innerHTML = "<b>Canvas Blob Fingerprint:</b> " + calcMD5(blob);
+		var reader = new FileReader();
+		reader.addEventListener("loadend", function() {
+			document.getElementById("canvas-blob-data").innerHTML = "<b>Canvas Blob Data:</b> " + reader.result;
+			document.getElementById("canvas-blob-fingerprint").innerHTML = "<b>Canvas Blob Fingerprint:</b> " + calcMD5(reader.result.toString());
+		});
+		reader.readAsArrayBuffer(blob);
 	});
 
 	try {
 		var imageFile = canvas.mozGetAsFile("canvas.png", "image/png");
+		var reader = new FileReader();
+		reader.addEventListener("loadend", function() {
+			document.getElementById("canvas-file-data").innerHTML = "<b>Canvas File Data:</b> " + reader.result;
+			document.getElementById("canvas-file-fingerprint").innerHTML = "<b>Canvas File Fingerprint:</b> " + calcMD5(reader.result.toString());
 
-		document.getElementById("canvas-file-data").innerHTML = "<b>Canvas File Data:</b> " + imageFile;
-		document.getElementById("canvas-file-fingerprint").innerHTML = "<b>Canvas File Fingerprint:</b> " + calcMD5(imageFile);
+		});
+		reader.readAsArrayBuffer(imageFile);
 	}
 	catch (e) {
 		document.getElementById("canvas-file-data").innerHTML = "<b>Canvas File Data:</b> " + e.name;
@@ -175,8 +182,6 @@ window.onload = function() {
 
 	var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-	document.getElementById("context2d-image-data").innerHTML = "<b>Context 2D Image Data:</b> " + imageData
-	document.getElementById("context2d-image-fingerprint").innerHTML = "<b>Context 2D Image Fingerprint:</b> " + calcMD5(imageData);
-
-	// TODO: Add CanvasRenderingContext2D.getImageData()
+	document.getElementById("context2d-image-data").innerHTML = "<b>Context 2D Image Data:</b> " + imageData.data;
+	document.getElementById("context2d-image-fingerprint").innerHTML = "<b>Context 2D Image Fingerprint:</b> " + calcMD5(imageData.data.toString());
 }

@@ -114,6 +114,8 @@
 
 <h2><u>Canvas API</u></h2>
 
+<canvas id="fp-canvas" width="200" height="200">No canvas support.</canvas>
+
 <p id="canvas-url-data"></p>
 <p id="canvas-url-fingerprint"></p>
 <p id="canvas-blob-data"></p>
