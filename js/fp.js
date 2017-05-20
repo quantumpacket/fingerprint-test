@@ -160,9 +160,9 @@ window.onload = function() {
 		var reader = new FileReader();
 		reader.addEventListener("loadend", function() {
 			document.getElementById("canvas-blob-data").innerHTML = "<b>Canvas Blob Data:</b> " + reader.result;
-			document.getElementById("canvas-blob-fingerprint").innerHTML = "<b>Canvas Blob Fingerprint:</b> " + calcMD5(reader.result.toString());
+			document.getElementById("canvas-blob-fingerprint").innerHTML = "<b>Canvas Blob Fingerprint:</b> " + calcMD5(reader.result);
 		});
-		reader.readAsArrayBuffer(blob);
+		reader.readAsText(blob);
 	});
 
 	try {
@@ -170,10 +170,10 @@ window.onload = function() {
 		var reader = new FileReader();
 		reader.addEventListener("loadend", function() {
 			document.getElementById("canvas-file-data").innerHTML = "<b>Canvas File Data:</b> " + reader.result;
-			document.getElementById("canvas-file-fingerprint").innerHTML = "<b>Canvas File Fingerprint:</b> " + calcMD5(reader.result.toString());
+			document.getElementById("canvas-file-fingerprint").innerHTML = "<b>Canvas File Fingerprint:</b> " + calcMD5(reader.result);
 
 		});
-		reader.readAsArrayBuffer(imageFile);
+		reader.readAsText(imageFile);
 	}
 	catch (e) {
 		document.getElementById("canvas-file-data").innerHTML = "<b>Canvas File Data:</b> " + e.name;
