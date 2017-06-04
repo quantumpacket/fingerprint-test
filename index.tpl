@@ -124,10 +124,17 @@
 <p id="canvas-file-fingerprint"></p>
 <p id="context2d-image-data"></p>
 <p id="context2d-image-fingerprint"></p>
+<p id="webgl-readpixels-data"></p>
+<p id="webgl-readpixels-fingerprint"></p>
 
 <h2><u>AudioContext API</u></h2>
 
-<p>Coming Soon ...</p>
+<p id="audio-context-fingerprint"></p>
+
+<h2><u>Element API</u></h2>
+
+<p id="client-rects-data"></p>
+<p id="client-rects-fingerprint"></p>
 
 </body>
 </html>

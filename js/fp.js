@@ -113,43 +113,43 @@ window.onload = function() {
 	canvas.height = 200;
 	canvas.style.display = "inline";
 
-	var ctx = canvas.getContext("2d");
+	var ctx2D = canvas.getContext("2d");
 
-	ctx.rect(0, 0, 10, 10);
-	ctx.rect(2, 2, 6, 6);
+	ctx2D.rect(0, 0, 10, 10);
+	ctx2D.rect(2, 2, 6, 6);
 
-	ctx.textBaseline = "alphabetic";
-	ctx.fillStyle = "#f60";
-	ctx.fillRect(125, 1, 62, 20);
-	ctx.fillStyle = "#069";
+	ctx2D.textBaseline = "alphabetic";
+	ctx2D.fillStyle = "#f60";
+	ctx2D.fillRect(125, 1, 62, 20);
+	ctx2D.fillStyle = "#069";
 
-	ctx.font = "11pt Arial";
+	ctx2D.font = "11pt Arial";
 
-	ctx.fillText("Cwm fjordbank glyphs vext quiz, \ud83d\ude03", 2, 15);
-	ctx.fillStyle = "rgba(102, 204, 0, 0.2)";
-	ctx.font = "18pt Arial";
-	ctx.fillText("Cwm fjordbank glyphs vext quiz, \ud83d\ude03", 4, 45);
+	ctx2D.fillText("Cwm fjordbank glyphs vext quiz, \ud83d\ude03", 2, 15);
+	ctx2D.fillStyle = "rgba(102, 204, 0, 0.2)";
+	ctx2D.font = "18pt Arial";
+	ctx2D.fillText("Cwm fjordbank glyphs vext quiz, \ud83d\ude03", 4, 45);
 
-	ctx.globalCompositeOperation = "multiply";
-	ctx.fillStyle = "rgb(255,0,255)";
-	ctx.beginPath();
-	ctx.arc(50, 50, 50, 0, Math.PI * 2, true);
-	ctx.closePath();
-	ctx.fill();
-	ctx.fillStyle = "rgb(0,255,255)";
-	ctx.beginPath();
-	ctx.arc(100, 50, 50, 0, Math.PI * 2, true);
-	ctx.closePath();
-	ctx.fill();
-	ctx.fillStyle = "rgb(255,255,0)";
-	ctx.beginPath();
-	ctx.arc(75, 100, 50, 0, Math.PI * 2, true);
-	ctx.closePath();
-	ctx.fill();
-	ctx.fillStyle = "rgb(255,0,255)";
-	ctx.arc(75, 75, 75, 0, Math.PI * 2, true);
-	ctx.arc(75, 75, 25, 0, Math.PI * 2, true);
-	ctx.fill("evenodd");
+	ctx2D.globalCompositeOperation = "multiply";
+	ctx2D.fillStyle = "rgb(255,0,255)";
+	ctx2D.beginPath();
+	ctx2D.arc(50, 50, 50, 0, Math.PI * 2, true);
+	ctx2D.closePath();
+	ctx2D.fill();
+	ctx2D.fillStyle = "rgb(0,255,255)";
+	ctx2D.beginPath();
+	ctx2D.arc(100, 50, 50, 0, Math.PI * 2, true);
+	ctx2D.closePath();
+	ctx2D.fill();
+	ctx2D.fillStyle = "rgb(255,255,0)";
+	ctx2D.beginPath();
+	ctx2D.arc(75, 100, 50, 0, Math.PI * 2, true);
+	ctx2D.closePath();
+	ctx2D.fill();
+	ctx2D.fillStyle = "rgb(255,0,255)";
+	ctx2D.arc(75, 75, 75, 0, Math.PI * 2, true);
+	ctx2D.arc(75, 75, 25, 0, Math.PI * 2, true);
+	ctx2D.fill("evenodd");
 
 	var dataURL = canvas.toDataURL();
 
@@ -180,8 +180,113 @@ window.onload = function() {
 		document.getElementById("canvas-file-fingerprint").innerHTML = "<b>Canvas File Fingerprint:</b> " + e.message;
 	}
 
-	var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+	var imageData = ctx2D.getImageData(0, 0, canvas.width, canvas.height);
 
-	document.getElementById("context2d-image-data").innerHTML = "<b>Context 2D Image Data:</b> " + imageData.data;
-	document.getElementById("context2d-image-fingerprint").innerHTML = "<b>Context 2D Image Fingerprint:</b> " + calcMD5(imageData.data.toString());
+	document.getElementById("context2d-image-data").innerHTML = "<b>Context2D Image Data:</b> " + imageData.data;
+	document.getElementById("context2d-image-fingerprint").innerHTML = "<b>Context2D Image Fingerprint:</b> " + calcMD5(imageData.data.toString());
+
+	// TODO: Both of these return null.
+	//var ctxWebGL = canvas.getContext("webgl");
+	//var ctxWebGLExperimental = canvas.getContext("experimental-webgl");
+
+	//console.log(ctxWebGL === null);
+	//console.log(ctxWebGLExperimental === null);
+
+	//var image = new ImageData(canvas.width, canvas.height);
+	//var pixels = new Uint8Array(image.data.length);
+
+	//ctxWebGL.readPixels(0, 0, canvas.width, canvas.height, WebGLRenderingContext.RGBA, WebGLRenderingContext.UNSIGNED_BYTE, pixels);
+
+	//document.getElementById("webgl-readpixels-data").innerHTML = "<b>WebGL Pixel Data:</b> " + pixels;
+	//document.getElementById("webgl-readpixels-fingerprint").innerHTML = "<b>WebGL Pixel Fingerprint:</b> " + calcMD5(pixels.toString());
+
+	function getAudioFp(callback) {
+        	// Details: https://audiofingerprint.openwpm.com/
+	        var hybrid_output = [];
+
+        	var audioCtx = new(window.AudioContext || window.webkitAudioContext),
+	        oscillator = audioCtx.createOscillator(),
+	        analyser = audioCtx.createAnalyser(),
+        	gain = audioCtx.createGain(),
+	        scriptProcessor = audioCtx.createScriptProcessor(4096, 1, 1),
+	        compressor, bins;
+
+        	// Create and configure compressor
+	        compressor = audioCtx.createDynamicsCompressor();
+	        compressor.threshold && (compressor.threshold.value = -50);
+	        compressor.knee && (compressor.knee.value = 40);
+	        compressor.ratio && (compressor.ratio.value = 12);
+	        compressor.reduction && (compressor.reduction.value = -20);
+        	compressor.attack && (compressor.attack.value = 0);
+	        compressor.release && (compressor.release.value = .25);
+
+        	gain.gain.value = 0; // Disable volume
+	        oscillator.type = 'triangle'; // Set oscillator to output triangle wave
+        	oscillator.connect(compressor); // Connect oscillator output to dynamic compressor
+	        compressor.connect(analyser); // Connect compressor to analyser
+        	analyser.connect(scriptProcessor); // Connect analyser output to scriptProcessor input
+	        scriptProcessor.connect(gain); // Connect scriptProcessor output to gain input
+	        gain.connect(audioCtx.destination); // Connect gain output to audiocontext destination
+
+        	scriptProcessor.onaudioprocess = function(bins) {
+            		bins = new Float32Array(analyser.frequencyBinCount);
+            		analyser.getFloatFrequencyData(bins);
+            		for (var i = 0; i < bins.length; i = i + 1) {
+                		hybrid_output.push(bins[i]);
+            		}
+            		analyser.disconnect();
+            		scriptProcessor.disconnect();
+            		gain.disconnect();
+            		var audioFp = JSON.stringify(hybrid_output);
+			callback(audioFp);
+        	};
+
+        	oscillator.start(0);
+    	}
+
+	getAudioFp(function(audioFp) {
+		document.getElementById("audio-context-fingerprint").innerHTML = "<b>Audio Context Fingerprint:</b> " + calcMD5(audioFp);
+	});
+
+	function getClientRectsFp() {
+		// Details: http://jcarlosnorte.com/security/2016/03/06/advanced-tor-browser-fingerprinting.html
+		var elem = document.createElement('div');
+		var s = elem.style;
+		s.position = 'absolute';
+		s.left = '3.1px';
+		s.top = '2.1px';
+		s.zIndex = '-100';
+		s.visibility = 'hidden';
+		s.fontSize = '19.123px';
+		s.transformOrigin = '0.1px 0.2px 0.3px';
+		s.webkitTransformOrigin = '0.1px 0.2px 0.3px';
+		s.webkitTransform = 'scale(1.01123) matrix3d(0.251106, 0.0131141, 0, -0.000109893, -0.0380797, 0.349552, 0, 7.97469e-06, 0, 0, 1, 0, 575, 88, 0, 1)';
+		s.transform = 'scale(1.01123) matrix3d(0.251106, 0.0131141, 0, -0.000109893, -0.0380797, 0.349552, 0, 7.97469e-06, 0, 0, 1, 0, 575, 88, 0, 1)';
+		elem.innerHTML = '<h1>Sed ut perspiciatis unde</h1>pousdfnmv<b>asd<i id="target">asd</i></b>';
+		document.body.appendChild(elem);
+
+		var rect = document.getElementById('target').getClientRects()[0];
+
+		var json = {
+			x: rect['x'],
+			y: rect['y'],
+			width: rect['width'],
+			height: rect['height'],
+			top: rect['top'],
+			right: rect['right'],
+			bottom: rect['bottom'],
+			left: rect['left']
+		};
+
+		if (elem.remove) {
+			elem.remove()
+		};
+
+		return JSON.stringify(json);
+	}
+
+	var clientRectsFp = getClientRectsFp();
+
+	document.getElementById("client-rects-data").innerHTML = "<b>Client Rectangles:</b> " + clientRectsFp;
+	document.getElementById("client-rects-fingerprint").innerHTML = "<b>Client Rectangles:</b> " + calcMD5(clientRectsFp);
 }
